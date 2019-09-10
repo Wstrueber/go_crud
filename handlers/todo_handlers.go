@@ -52,10 +52,10 @@ func CreateTodo(w http.ResponseWriter, r *http.Request) {
 func GetAllTodos(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var todos []models.Todo
-	var id int
+	var id, orderNumber int
 	var content string
 	var status bool
-	var orderNumber int
+
 	rows, err := database.DB.Query("SELECT * FROM todo ORDER BY order_number ASC")
 	if err != nil {
 		return
@@ -86,10 +86,9 @@ func GetTodo(w http.ResponseWriter, r *http.Request) {
 	rows, err := database.DB.Query(`SELECT * from todo WHERE
 	id=$1`, todoID)
 	defer rows.Close()
-	var count, id int
+	var count, id, orderNumber int
 	var content string
 	var status bool
-	var orderNumber int
 
 	for rows.Next() {
 		count++
@@ -143,10 +142,9 @@ func UpdateTodo(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
-	var id int
+	var id, orderNumber int
 	var content string
 	var status bool
-	var orderNumber int
 
 	defer rows.Close()
 	for rows.Next() {
